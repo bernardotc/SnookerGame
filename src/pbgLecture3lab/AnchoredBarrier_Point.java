@@ -11,7 +11,7 @@ public class AnchoredBarrier_Point extends AnchoredBarrier_Curve {
 	 */
 
 	public final Vector2D barrierPointPosition;
-	private final static Color col=Color.blue;
+	private final static Color col=Color.RED;
 
 
 	public AnchoredBarrier_Point(double centrex, double centrey) {
