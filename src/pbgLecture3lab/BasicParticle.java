@@ -95,8 +95,19 @@ public class BasicParticle {
 	}
 
 	public static void implementElasticCollision(BasicParticle p1, BasicParticle p2, double e) {
-		if (!p1.collidesWith(p2)) throw new IllegalArgumentException();
-		throw new RuntimeException("Not completed");
+		/*if (!p1.collidesWith(p2)) throw new IllegalArgumentException();
+		throw new RuntimeException("Not completed");*/
+                // Create a normalised vector from p1p2 (vector)
+                Vector2D n = Vector2D.minus(p2.getPos(), p1.getPos());
+                n.normalise();
+                // Get the impulse of p2 (j2)
+                double j2 = ((e + 1) * (p1.getVel().scalarProduct(n) - p2.getVel().scalarProduct(n))) / (1/p1.mass + 1/p2.mass);
+                // Set new velocity (v2)
+                p2.getVel().addScaled(n, j2/p2.mass);
+                // Get new velocity (v1)
+                Vector2D nModified = n;
+                nModified.mult(j2/p1.mass);
+                p1.setVel(Vector2D.minus(p1.getVel(), nModified));
 	}
 	
 
