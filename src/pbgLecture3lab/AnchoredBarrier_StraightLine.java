@@ -64,7 +64,7 @@ public class AnchoredBarrier_StraightLine extends AnchoredBarrier {
 			vNormal=-vNormal;
 		Vector2D result=new Vector2D(getUnitTangent());
 		result.mult(vParallel);
-		result.addScaled(getUnitNormal(), vNormal);
+		result.addScaled(getUnitNormal(), vNormal*.9);
 		return result;
 	}
 

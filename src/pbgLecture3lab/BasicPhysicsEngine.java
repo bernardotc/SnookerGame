@@ -19,7 +19,7 @@ public class BasicPhysicsEngine {
 			SCREEN_WIDTH, SCREEN_HEIGHT);
 	public static final double WORLD_WIDTH=10;//metres
 	public static final double WORLD_HEIGHT=SCREEN_HEIGHT*(WORLD_WIDTH/SCREEN_WIDTH);// meters - keeps world dimensions in same aspect ratio as screen dimensions, so that circles get transformed into circles as opposed to ovals
-	public static final double GRAVITY=9.8;
+	public static final double GRAVITY= 0;
 
 	// sleep time between two drawn frames in milliseconds 
 	public static final int DELAY = 20;
@@ -39,16 +39,16 @@ public class BasicPhysicsEngine {
 		return (int) (worldLength/WORLD_WIDTH*SCREEN_WIDTH);
 	}
 	public static double convertScreenXtoWorldX(int screenX) {
-		throw new RuntimeException("Not implemented");
 		// to get this to work you need to program the inverse function to convertWorldXtoScreenX
 		// this means rearranging the equation z=(worldX/WORLD_WIDTH*SCREEN_WIDTH) to make worldX the subject, 
 		// and then returning worldX
+            return screenX * WORLD_WIDTH / SCREEN_WIDTH; 
 	}
 	public static double convertScreenYtoWorldY(int screenY) {
-		throw new RuntimeException("Not implemented");
 		// to get this to work you need to program the inverse function to convertWorldYtoScreenY
 		// this means rearranging the equation z= (SCREEN_HEIGHT-(worldY/WORLD_HEIGHT*SCREEN_HEIGHT)) to make 
 		// worldY the subject, and then returning worldY
+            return ((screenY - SCREEN_HEIGHT) * WORLD_HEIGHT / SCREEN_HEIGHT) * -1;
 	}
 	
 	
@@ -62,13 +62,20 @@ public class BasicPhysicsEngine {
 		barriers = new ArrayList<AnchoredBarrier>();
 		// empty particles array, so that when a new thread starts it clears current particle state:
 		particles = new ArrayList<BasicParticle>();
-		LayoutMode layout=LayoutMode.CONCAVE_ARENA;
+		LayoutMode layout=LayoutMode.SNOOKER_TABLE;
 		double r=.2;
 
 		
-		particles.add(new BasicParticle(r+WORLD_WIDTH/2-1,WORLD_HEIGHT/2,3.5,5.2, r*3,true, Color.RED, 2));
-		particles.add(new BasicParticle(r+WORLD_WIDTH/2-2,WORLD_HEIGHT/2,-3.5,5.2, r*3,true, Color.PINK, 4));		
-		particles.add(new BasicParticle(r+WORLD_WIDTH/2,WORLD_HEIGHT/2,3.5,-5.2, r*3,true, Color.BLUE, 10));
+		particles.add(new BasicParticle(r+WORLD_WIDTH/2-1,WORLD_HEIGHT/2,3.5,5.2, r*2/3,true, Color.RED, 2));
+                particles.add(new BasicParticle(r+WORLD_WIDTH/2-1,WORLD_HEIGHT/2+1,3.5,5.2, r*2/3,true, Color.RED, 2));
+                particles.add(new BasicParticle(r+WORLD_WIDTH/2-1,WORLD_HEIGHT/2+2,3.5,5.2, r*2/3,true, Color.RED, 2));
+		particles.add(new BasicParticle(r+WORLD_WIDTH/2-2,WORLD_HEIGHT/2,-3.5,5.2, r*2/3,true, Color.PINK, 2));
+                particles.add(new BasicParticle(r+WORLD_WIDTH/2-2,WORLD_HEIGHT/2+1,-3.5,5.2, r*2/3,true, Color.PINK, 2));	
+                particles.add(new BasicParticle(r+WORLD_WIDTH/2-2,WORLD_HEIGHT/2+2,-3.5,5.2, r*2/3,true, Color.PINK, 2));	
+		particles.add(new BasicParticle(r+WORLD_WIDTH/2,WORLD_HEIGHT/2,3.5,-5.2, r*2/3,true, Color.BLUE, 2));
+                particles.add(new BasicParticle(r+WORLD_WIDTH/2,WORLD_HEIGHT/2+1,3.5,-5.2, r*2/3,true, Color.BLUE, 2));
+                particles.add(new BasicParticle(r+WORLD_WIDTH/2,WORLD_HEIGHT/2+2,3.5,-5.2, r*2/3,true, Color.BLUE, 2));
+                particles.add(new BasicParticle_MouseListener(r+WORLD_WIDTH/2-3,WORLD_HEIGHT/2,3.5,-5.2, r,true, Color.CYAN, 4));
 		
 		
 		
@@ -165,10 +172,12 @@ public class BasicPhysicsEngine {
 		p3.rotate(orientation);
 		p4.rotate(orientation);
 		// we are being careful here to list edges in an anticlockwise manner, so that normals point inwards!
-		barriers.add(new AnchoredBarrier_StraightLine(centrex+p1.x, centrey+p1.y, centrex+p2.x, centrey+p2.y, col));
+		barriers.add(new AnchoredBarrier_StraightLine(centrex+p1.x, centrey+p1.y, centrex+p2.x, centrey+p2.y, col, cushionDepth));
+                barriers.add(new AnchoredBarrier_Point(centrex+p2.x, centrey + p2.y));
 		barriers.add(new AnchoredBarrier_StraightLine(centrex+p2.x, centrey+p2.y, centrex+p3.x, centrey+p3.y, col));
-		barriers.add(new AnchoredBarrier_StraightLine(centrex+p3.x, centrey+p3.y, centrex+p4.x, centrey+p4.y, col));
-		// oops this will have concave corners so will need to fix that some time! 
+		barriers.add(new AnchoredBarrier_StraightLine(centrex+p3.x, centrey+p3.y, centrex+p4.x, centrey+p4.y, col, cushionDepth));
+                barriers.add(new AnchoredBarrier_Point(centrex+p3.x, centrey + p3.y));
+		// FIXED -- oops this will have concave corners so will need to fix that some time! 
 	}
 	
 	public static void main(String[] args) throws Exception {

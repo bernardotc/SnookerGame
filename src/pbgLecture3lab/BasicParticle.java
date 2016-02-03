@@ -5,6 +5,8 @@ import static pbgLecture3lab.BasicPhysicsEngine.GRAVITY;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import static pbgLecture3lab.BasicPhysicsEngine.SCREEN_HEIGHT;
+import static pbgLecture3lab.BasicPhysicsEngine.SCREEN_WIDTH;
 
 public class BasicParticle {
 	/* Author: Michael Fairbank
@@ -109,6 +111,6 @@ public class BasicParticle {
                 nModified.mult(j2/p1.mass);
                 p1.setVel(Vector2D.minus(p1.getVel(), nModified));
 	}
-	
+
 
 }

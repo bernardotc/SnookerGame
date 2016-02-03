@@ -12,21 +12,39 @@ public class BasicMouseListener extends MouseInputAdapter {
 	private static int mouseX, mouseY;
 	private static boolean mouseButtonPressed;
 	public void mouseMoved(MouseEvent e) {
-       mouseX=e.getX();
-       mouseY=e.getY();
-       mouseButtonPressed=false;
-       System.out.println("Move event: "+mouseX+","+mouseY);
-    }
+                mouseX=e.getX();
+                mouseY=e.getY();
+                mouseButtonPressed=false;
+                System.out.println("Move event: "+mouseX+","+mouseY);
+        }
 	public void mouseDragged(MouseEvent e) {
-//	   mouseX=e.getX();
-//	   mouseY=e.getY();
+            mouseButtonPressed = true;
+            mouseX=e.getX();
+            mouseY=e.getY();
 //	   mouseButtonPressed=true;
 //       System.out.println("Drag event: "+mouseX+","+mouseY);
 	}
-	public boolean isMouseButtonPressed() {
+	public static boolean isMouseButtonPressed() {
 		return mouseButtonPressed;
 	}
 	public static Vector2D getWorldCoordinatesOfMousePointer() {
 		return new Vector2D(BasicPhysicsEngine.convertScreenXtoWorldX(mouseX), BasicPhysicsEngine.convertScreenYtoWorldY(mouseY));
 	}
+
+        public static int getMouseX() {
+                return mouseX;
+        }
+
+        public static void setMouseX(int mouseX) {
+                BasicMouseListener.mouseX = mouseX;
+        }
+
+        public static int getMouseY() {
+                return mouseY;
+        }
+
+        public static void setMouseY(int mouseY) {
+                BasicMouseListener.mouseY = mouseY;
+        }
+        
 }
